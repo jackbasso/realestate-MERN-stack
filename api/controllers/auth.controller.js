@@ -53,6 +53,8 @@ export const login = async (req, res) => {
       { expiresIn: age }
     );
 
+    const { password: userPassword, ...userInfo } = user; //create an object name userInfo without the password
+
     //res.setHeader("Set-Cookie", "test=" + "myValue").json("success!");
     res
       .cookie("token", token, {
@@ -61,7 +63,7 @@ export const login = async (req, res) => {
         maxAge: age,
       })
       .status(200)
-      .json({ message: "Login Successful" });
+      .json(userInfo);
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: "Failed to login!" });
@@ -69,5 +71,5 @@ export const login = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  //deb operations
+  res.clearCookie("token").json({ message: "Logout Successful!" });
 };
